@@ -1,0 +1,40 @@
+- name: install zookeeper
+  apt: name=zookeeperd state=present force=yes
+  tags: kafka
+
+- name: Setting internal variable
+  set_fact:
+    zk_name: zookeeper/conf
+  tags: zookeeper
+
+- name: Zookeeper | Setting internal variable
+  set_fact:
+    zk_dir: "{{ zk.install_dir }}/zookeeper"
+  tags: zookeeper
+
+- name: Ensure zoo.conf is present
+  template:
+    src: zoo.cfg.j2
+    dest: "{{ zk_dir }}/conf/zoo.cfg"
+  notify: restart zookeeper
+  tags: zookeeper
+
+- name: Ensures data dir {{ zk.data_dir }} exists
+  file:
+    path: "{{ zk.data_dir }}"
+    state: directory
+    owner: zookeeper
+    group: zookeeper
+  tags: zookeeper
+
+- name: Ensure myid is set in {{ zk.data_dir }}/myid
+  template:
+    src: myid
+    dest: "{{ zk.data_dir }}/myid"
+  tags: zookeeper
+
+- name: restart zookeeper
+  shell: service zookeeper restart 
+  tags: zookeeper
+
+

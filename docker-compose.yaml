@@ -1,0 +1,28 @@
+version: '2'
+services:
+  kafka1:
+    image: harsh/ubuntu-ssh1
+    hostname: kafka1
+    ports:
+      - "49154:22"
+  kafka2:
+    image: harsh/ubuntu-ssh1
+    hostname: kafka2
+    ports:    
+      - "49155:22"
+    links: 
+      - kafka1  
+  zookeeper1:
+    image: harsh/ubuntu-ssh1
+    hostname: zookeeper1
+    ports:
+      - "49156:22"
+    links: 
+      - kafka2
+  zookeeper2:
+    image: harsh/ubuntu-ssh1
+    hostname: zookeeper2
+    ports:    
+      - "49157:22"
+    links: 
+      - zookeeper1
