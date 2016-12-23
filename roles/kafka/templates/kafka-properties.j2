@@ -121,3 +121,5 @@ zookeeper.connect={{ zk_hosts | join(":{0},".format(2181)) }}:{{ 2181 }}
 zookeeper.connection.timeout.ms=6000
 
 delete.topic.enable=true
+
+offsets.topic.replication.factor=2

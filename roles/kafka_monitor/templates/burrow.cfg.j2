@@ -11,7 +11,7 @@ group-blacklist=^(console-consumer-|python-kafka-consumer-).*$
 hostname={{ name }}
 {% endfor %}
 port=2181
-timeout=6
+timeout=60
 lock-path=/burrow/notifier
 
 [kafka "local"]
@@ -40,16 +40,20 @@ port=8000
 ; listen=host:port
 ; listen=host2:port2
 
-#[smtp]
-#server=mailserver.example.com
-#port=25
-#from=burrow-noreply@example.com
-#template=config/default-email.tmpl
+[smtp]
+server=smtp.gmail.com
+port=587
+auth-type=plain
+username=mh.harsh@gmail.com
+password=********
+from=burrow-noreply@example.com
+template=config/default-email.tmpl
 
-#[emailnotifier "bofh@example.com"]
-#group=local,critical-consumer-group
-#group=local,other-consumer-group
-#interval=60
+[emailnotifier "mh.harsh@gmail.com"]
+group=local,critical-consumer-group
+group=local,other-consumer-group
+interval=60
+enable=true
 
 [notify]
 interval=10

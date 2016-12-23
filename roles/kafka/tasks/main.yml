@@ -61,3 +61,12 @@
   shell: "{{ kafka.start_script }}"
   tags: kafka
 
+# - name: Create a kafka topic for test
+#   shell: "{{ kafka.kafka_producer }}"
+#   tags: kafka 
+
+# - name: Consume kafka topic for test
+#   shell: "{{kafka.kafka_consumer}}"
+#   tags: kafka
+
+

@@ -8,7 +8,8 @@ kafka:
   stop_script: "/etc/kafka_2.11-0.8.2.1/bin/kafka-server-stop.sh /etc/kafka_2.11-0.8.2.1/config/server.properties"
   startup_script_file: "/opt/startup.sh"
   log_dir: "/var/log/kafka"
-
+  kafka_producer: "echo \"Hello, World\" | /etc/kafka_2.11-0.8.2.1/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic TutorialTopic > /dev/null"
+  kafka_consumer: "/etc/kafka_2.11-0.8.2.1/bin/kafka-console-consumer.sh --zookeeper zookeeper1:2181 --topic TutorialTopic --from-beginning"
 zk_hosts: "{{ groups['zookeepers'] }}" 
 kafka_cluster_info:
   kafka1:
