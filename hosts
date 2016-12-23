@@ -1,8 +1,12 @@
 [kafka_cluster]
+kafka1
 kafka1 kafka_broker_id=1 kafka_hostname=kafka1 ansible_connection=ssh ansible_host=localhost ansible_port=49154 ansible_user=root
 kafka2 kafka_broker_id=2 kafka_hostname=kafka2 ansible_connection=ssh ansible_host=localhost ansible_port=49155 ansible_user=root 
 
 [zookeepers]
-zookeeper1 zookeeper_id=1 zk_client_port=2181 ansible_connection=ssh ansible_host=localhost ansible_port=49156 ansible_ssh_user=root
-zookeeper2 zookeeper_id=2 zk_client_port=2181 ansible_connection=ssh ansible_host=localhost ansible_port=49157 ansible_ssh_user=root
+zookeeper1 zookeeper_id=1 zk_client_port=2181 ansible_connection=ssh ansible_host=localhost ansible_port=49150 ansible_ssh_user=root
+zookeeper2 zookeeper_id=2 zk_client_port=2181 ansible_connection=ssh ansible_host=localhost ansible_port=49161 ansible_ssh_user=root
+
+[kafka_monitor]
+kafka_monitor1  ansible_connection=ssh ansible_host=localhost ansible_port=49162 ansible_ssh_user=root
 

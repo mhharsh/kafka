@@ -5,3 +5,7 @@
 - hosts: kafka_cluster
   roles:
     - kafka
+
+- hosts: kafka_monitor
+  roles:
+    - kafka_monitor

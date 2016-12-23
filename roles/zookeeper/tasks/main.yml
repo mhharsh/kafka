@@ -16,7 +16,6 @@
   template:
     src: zoo.cfg.j2
     dest: "{{ zk_dir }}/conf/zoo.cfg"
-  notify: restart zookeeper
   tags: zookeeper
 
 - name: Ensures data dir {{ zk.data_dir }} exists

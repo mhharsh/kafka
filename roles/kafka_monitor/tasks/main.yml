@@ -1,0 +1,87 @@
+- name: Create workdir
+  shell:  mkdir -p  /workspace/go/src/
+  tags: kafka_monitor
+   
+- name: Setting internal variable
+  set_fact:
+    gopath: /workspace/go
+  tags: kafka_monitor
+
+- name: Ensure go package manager is downloaded 
+  get_url:
+    url: "https://raw.githubusercontent.com/pote/gpm/v1.4.0/bin/gpm"
+    dest: /usr/local/bin
+    mode: 0755
+  tags: kafka_monitor
+
+- name: Clone burrow repository
+  shell: /goroot/bin/go get github.com/linkedin/Burrow
+  environment: 
+    GOPATH: "{{gopath}}"
+    GOROOT: "/goroot"
+  args: 
+    chdir: "{{gopath}}/src"
+    executable: /bin/bash
+  tags: kafka_monitor
+
+
+- name: Build and install Burrow
+  shell: gpm install
+  args: 
+    chdir: "{{gopath}}/src/github.com/linkedin/Burrow"
+  environment: 
+    GOBIN: "{{ gopath }}/bin"
+  tags: kafka_monitor
+
+- name: Update gcfg repository
+  shell: /goroot/bin/go get  gopkg.in/gcfg.v1
+  environment: 
+    GOPATH: "{{gopath}}"
+    GOROOT: "/goroot"
+  args: 
+    chdir: "{{gopath}}/src/gopkg.in/"
+    executable: /bin/bash
+  tags: kafka_monitor
+
+# - name: Build dependencies
+#   shell: git clone https://github.com/go-gcfg/gcfg.git
+#   args: 
+#     chdir: "/tmp"
+#   ignore_errors: yes
+#   tags: kafka_monitor
+
+# - name: move config 
+#   shell: mv /tmp/gcfg/ {{gopath}}/src/gopkg.in/gcfg.v1
+#   # args: 
+#   #   chdir: "{{gopath}}/src/github.com/linkedin/Burrow"
+#   tags: kafka_monitor
+
+- name: install
+  shell: /goroot/bin/go install
+  args: 
+    chdir: "{{gopath}}/src/github.com/linkedin/Burrow"
+  environment: 
+    GOPATH: "{{gopath}}"
+    GOROOT: "/goroot"
+    GOBIN: "/goroot/bin"
+  tags: kafka_monitor
+
+- name: Copy real config
+  template:
+    src: burrow.cfg.j2
+    dest: "{{gopath}}/src/github.com/linkedin/Burrow/config/burrow.cfg"
+  tags: kafka_monitor
+
+- name: Create logdir
+  file:  path={{gopath}}/src/github.com/linkedin/Burrow/config/log state=directory
+  tags: kafka_monitor
+
+- name: Starting Burrow service
+  shell: /goroot/bin/Burrow -config {{gopath}}/src/github.com/linkedin/Burrow/config/burrow.cfg
+  environment: 
+    GOPATH: "{{gopath}}"
+    GOROOT: "/goroot"
+  args: 
+    chdir: "{{gopath}}/src/github.com/linkedin/Burrow"
+    # executable: /bin/bash
+  tags: kafka_monitor 

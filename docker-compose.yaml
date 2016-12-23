@@ -1,28 +1,46 @@
 version: '2'
 services:
   kafka1:
-    image: harsh/ubuntu-ssh1
+    image: harsh/ubuntu-java-ssh
     hostname: kafka1
     ports:
       - "49154:22"
+      - "9092:9092"
   kafka2:
-    image: harsh/ubuntu-ssh1
+    image: harsh/ubuntu-java-ssh
     hostname: kafka2
     ports:    
       - "49155:22"
+      - "9093:9092"
     links: 
       - kafka1  
   zookeeper1:
-    image: harsh/ubuntu-ssh1
+    image: harsh/ubuntu-java-ssh
     hostname: zookeeper1
     ports:
-      - "49156:22"
+      - "49150:22"
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+      - "5000:5000"
     links: 
       - kafka2
   zookeeper2:
-    image: harsh/ubuntu-ssh1
+    image: harsh/ubuntu-java-ssh
     hostname: zookeeper2
     ports:    
-      - "49157:22"
+      - "49161:22"
+      - "2182:2181"
+      - "2889:2888"
+      - "3889:3888"
+      - "5001:5000"
     links: 
       - zookeeper1
+  kafka-monitor:
+    image: harsh/ubuntu-go-ssh
+    hostname: kafkamonitor1
+    ports:    
+      - "49162:22"
+      - "3000:8000"
+    links: 
+      - zookeeper2
